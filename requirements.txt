@@ -1,0 +1,11 @@
+fastapi>=0.109.0,<0.116
+uvicorn[standard]>=0.27.0,<0.32
+sqlalchemy[asyncio]>=2.0.25,<3
+asyncpg>=0.29.0,<0.31
+pydantic>=2.5.0,<3
+pydantic-settings>=2.1.0,<3
+pandas>=2.1.0,<3
+python-multipart>=0.0.6,<0.1
+apscheduler>=3.10.4,<4
+greenlet>=3.0.0
+alembic>=1.13.0,<2

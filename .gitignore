@@ -1,0 +1,16 @@
+# Local secrets and overrides — never commit
+.env
+
+# Python
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.pdf
+data/
+.venv/
