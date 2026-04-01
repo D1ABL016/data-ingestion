@@ -2,6 +2,13 @@
 
 FastAPI service for chunked CSV ingestion (stores, users, store–user mappings) per the assignment HLD: async SQLAlchemy + PostgreSQL, background processing, strict CSV headers, and job polling.
 
+## Documentation References
+
+You can refer to the required high-level design in [high_level_design.md](./high_level_design.md).
+
+Detailed metrics and ingestion stats can be found in [performance_evidence.md](./performance_evidence.md).
+
+
 ## Prerequisites
 
 - Python 3.11+
@@ -64,4 +71,4 @@ curl -s "http://localhost:8000/api/v1/jobs/<job_id>"
 
 Replace `<job_id>` with the UUID from each upload response. Mappings return `422` if stores or users tables are empty.
 
-Uploaded CSVs are stored under `/tmp/uploads` by default (`upload_dir` / `UPLOAD_DIR` in settings). Completed uploads are deleted after processing; a hourly job also purges old files and finished job rows (24h retention).
+Uploaded CSVs are stored under `/tmp/uploads` by default (`upload_dir` / `UPLOAD_DIR` in settings). Completed uploads are deleted after processing; a hourly job also purges old files and finished job rows.

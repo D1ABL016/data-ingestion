@@ -42,6 +42,8 @@
 ## Additional business validation:
 - A user cannot be their own supervisor.
 - Such records will be skipped.
+- store_id must start with "STR" , if not then skip it.
+- external_store_id must start with "EXT" , if not then skip it.
 
 ---
 
