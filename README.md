@@ -48,25 +48,25 @@ pip install -r requirements.txt
 uvicorn data_ingestion.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-- OpenAPI: http://localhost:8000/docs  
-- Health: http://localhost:8000/health  
-- API base: http://localhost:8000/api/v1  
+- OpenAPI: {{baseURL}}/docs  
+- Health: {{baseURL}}/health  
+- API base: {{baseURL}}/api/v1  
 
 ## Example: upload and poll
 
 Upload order: **stores** → **users** → **mappings**.
 
 ```bash
-curl -s -X POST http://localhost:8000/api/v1/upload/stores \
+curl -s -X POST {{baseURL}}/api/v1/upload/stores \
   -F "file=@data/stores_master.csv"
 
-curl -s -X POST http://localhost:8000/api/v1/upload/users \
+curl -s -X POST {{baseURL}}/api/v1/upload/users \
   -F "file=@data/users_master.csv"
 
-curl -s -X POST http://localhost:8000/api/v1/upload/mappings \
+curl -s -X POST {{baseURL}}/api/v1/upload/mappings \
   -F "file=@data/store_user_mapping.csv"
 
-curl -s "http://localhost:8000/api/v1/jobs/<job_id>"
+curl -s "{{baseURL}}/api/v1/jobs/<job_id>"
 ```
 
 Replace `<job_id>` with the UUID from each upload response. Mappings return `422` if stores or users tables are empty.
