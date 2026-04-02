@@ -3,6 +3,7 @@ import re
 from typing import Any
 
 from pydantic import BaseModel, model_validator, field_validator
+from validation_utils import strip_val, validate_is_active, parse_date,validate_iso_date
 
 _email_re = re.compile(r"^[^@]+@[^@]+\.[^@]+$")
 _phone_re = re.compile(r"^[\d\s+\-()/]{1,32}$")
@@ -22,24 +23,18 @@ class UserRowIn(BaseModel):
     @field_validator("username", mode="before")
     @classmethod
     def username_strip(cls, v: Any) -> str:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return ""
-        return str(v).strip()
+        return strip_val(v)
 
     @field_validator("email", mode="before")
     @classmethod
     def email_strip(cls, v: Any) -> str:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return ""
-        return str(v).strip()
+        return strip_val(v)
 
     @field_validator("first_name", "last_name", "phone_number", "supervisor_username", mode="before")
     @classmethod
     def optional_strip(cls, v: Any) -> str | None:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return None
-        s = str(v).strip()
-        return s if s else None
+        s = strip_val(v)
+        return s if s != "" else None
 
     @field_validator("user_type", mode="before")
     @classmethod
@@ -51,18 +46,7 @@ class UserRowIn(BaseModel):
     @field_validator("is_active", mode="before")
     @classmethod
     def coerce_bool(cls, v: Any) -> bool:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return True
-        if isinstance(v, bool):
-            return v
-        if isinstance(v, int | float):
-            return bool(int(v))
-        s = str(v).strip().lower()
-        if s in ("true",  "yes"):
-            return True
-        if s in ("false", "no"):
-            return False
-        return True
+        return validate_is_active(v)
 
     @field_validator("username")
     @classmethod

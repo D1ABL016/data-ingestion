@@ -2,6 +2,7 @@ import math
 from typing import Any
 
 from pydantic import BaseModel, field_validator
+from validation_utils import strip_val, validate_is_active
 
 
 class StoreRowIn(BaseModel):
@@ -22,25 +23,18 @@ class StoreRowIn(BaseModel):
     @field_validator("store_id", mode="before")
     @classmethod
     def store_id_non_empty(cls, v: Any) -> str:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return ""
-        s = str(v).strip()
-        return s
+        return strip_val(v)
 
     @field_validator("name", "title", mode="before")
     @classmethod
     def strip_required_strings(cls, v: Any) -> str:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return ""
-        return str(v).strip()
-
+        return strip_val(v)
+    
     @field_validator("store_external_id", "store_brand", "store_type", "city", "state", "country", "region", mode="before")
     @classmethod
     def optional_strings(cls, v: Any) -> str | None:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return None
-        s = str(v).strip()
-        return s if s else None
+        s = strip_val(v)
+        return s if s!="" else None
 
     @field_validator("latitude", "longitude", mode="before")
     @classmethod
@@ -54,18 +48,7 @@ class StoreRowIn(BaseModel):
     @field_validator("is_active", mode="before")
     @classmethod
     def coerce_bool(cls, v: Any) -> bool:
-        if v is None or (isinstance(v, float) and math.isnan(v)):
-            return True
-        if isinstance(v, bool):
-            return v
-        if isinstance(v, int | float):
-            return bool(int(v))
-        s = str(v).strip().lower()
-        if s in ("true", "1", "yes"):
-            return True
-        if s in ("false", "0", "no"):
-            return False
-        return True
+        return validate_is_active(v)
 
     @field_validator("store_id")
     @classmethod
