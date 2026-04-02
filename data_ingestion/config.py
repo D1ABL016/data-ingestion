@@ -40,15 +40,15 @@ class Settings(BaseSettings):
         description="DB port when DATABASE_URL is not set",
     )
     postgres_user: str = Field(
-        default="postgres",
+        default="USER",
         description="DB user when DATABASE_URL is not set",
     )
     postgres_password: str = Field(
-        default="postgres",
+        default="PASSWORD",
         description="DB password when DATABASE_URL is not set (URL-encoded when building URL)",
     )
     postgres_db: str = Field(
-        default="data_ingestion",
+        default="DB_NAME",
         description="Database name when DATABASE_URL is not set",
     )
     upload_dir: str = Field(
@@ -77,9 +77,9 @@ class Settings(BaseSettings):
             return merged
         host = str(merged.get("postgres_host") or "localhost")
         port = int(merged.get("postgres_port") or 5432)
-        user = str(merged.get("postgres_user") or "postgres")
-        password = str(merged.get("postgres_password") or "postgres")
-        db = str(merged.get("postgres_db") or "data_ingestion")
+        user = str(merged.get("postgres_user") or "USER")
+        password = str(merged.get("postgres_password") or "PASSWORD")
+        db = str(merged.get("postgres_db") or "DB_NAME")
         pw = quote_plus(password)
         merged["database_url"] = (
             f"postgresql+asyncpg://{user}:{pw}@{host}:{port}/{db}"
